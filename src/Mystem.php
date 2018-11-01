@@ -86,7 +86,7 @@ class Mystem
             usleep(500);
             $raw .= stream_get_contents($pipe);
             $newOffset = mb_strlen($raw);
-        } while (mb_strpos($raw, $endMark, $offset) == false && $counter++ < 20);
+        } while (mb_strpos($raw, $endMark, $offset) === false && $counter++ < 20);
         return $raw;
     }
 

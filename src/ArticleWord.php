@@ -29,7 +29,7 @@ class ArticleWord extends Word
         /* @var ArticleWord $word */
         $word = parent::newFromLexicalString($lexicalString, $maxVariants);
 
-        if ($article) {
+        if ($article !== null) {
             $word->article = &$article;
         }
 
