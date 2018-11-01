@@ -142,7 +142,7 @@ class Mystem
         if (!static::$mystemPath) {
             $path = is_dir(__DIR__ . static::BIN_PATH)
                 ? __DIR__ . static::BIN_PATH
-                : __DIR__ . '/../../../..' . static::BIN_PATH;
+                : __DIR__ . '/../../..' . static::BIN_PATH;
 
             static::setMystemPath(
                 $path . (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'
