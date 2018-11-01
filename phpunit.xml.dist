@@ -20,6 +20,15 @@
         <directory>tests</directory>
     </testsuite>
 
+    <filter>
+        <whitelist>
+            <directory suffix=".php">src/</directory>
+        </whitelist>
+        <blacklist>
+            <directory>tests/</directory>
+        </blacklist>
+    </filter>
+
     <logging>
         <log type="tap" target="build/report.tap"/>
         <log type="junit" target="build/report.junit.xml"/>
