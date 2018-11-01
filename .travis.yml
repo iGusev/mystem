@@ -1,41 +1,49 @@
 language: php
 
 os:
-  - linux
-#  - osx
+- linux
 
 php:
-  - 7.0
-  - 7.1
-  - 7.2
-  - hhvm
+- 7.0
+- 7.1
+- 7.2
+- 7.3
+- hhvm
 
 matrix:
   fast_finish: true
   allow_failures:
-    - php: hhvm
-    - php: hhvm-nightly
+  - php: hhvm
 
 before_script:
-  - composer self-update
-  - composer install --prefer-source
+- flags="--prefer-dist --no-interaction --optimize-autoloader --no-suggest --no-progress "
+- composer install $flags -vv
 
 script:
-  - mkdir .reports
-  # Code style
-  - php vendor/bin/phpcs ./src/Mystem --standard=PSR1 --encoding=utf-8 --report=summary
-  - php vendor/bin/phpcs ./src/Mystem --standard=PSR2 --encoding=utf-8 --report=summary
-  # PHPUnit tests
-  - php vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=.reports/clover.xml
+- mkdir .reports
+# Code style
+- php vendor/bin/phpcs ./src --standard=PSR1 --encoding=utf-8 --report=summary
+- php vendor/bin/phpcs ./src --standard=PSR2 --encoding=utf-8 --report=summary
+# PHPUnit tests
+- php vendor/bin/phpunit --configuration phpunit.xml.dist --coverage-clover=.reports/clover.xml
 
 after_success:
-  # Send cover
-  - wget https://scrutinizer-ci.com/ocular.phar
-  - php ocular.phar code-coverage:upload --format=php-clover .reports/clover.xml
+# Send cover
+- wget https://scrutinizer-ci.com/ocular.phar
+- php ocular.phar code-coverage:upload --format=php-clover .reports/clover.xml
+
+cache:
+  directories:
+  - $HOME/.composer/cache
+
+addons:
+  apt:
+    packages:
+    - parallel
 
 git:
   depth: 1
 
 notifications:
   email:
-    - mail@igusev.ru
+  - mail@igusev.ru
