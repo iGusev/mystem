@@ -1,6 +1,6 @@
 {
   "name": "igusev/mystem",
-  "description": "Yandex Mystem wrapper",
+  "description": "PHP Yandex Mystem",
   "keywords": [
     "yandex",
     "stemmer",
@@ -42,7 +42,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "Mystem\\Tests\\": "tests"
+      "Mystem\\Tests\\": "tests/"
     }
   }
 }
