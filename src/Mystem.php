@@ -140,8 +140,12 @@ class Mystem
     public static function getMystemPath(): string
     {
         if (!static::$mystemPath) {
+            $path = is_dir(__DIR__ . static::BIN_PATH)
+                ? __DIR__ . static::BIN_PATH
+                : __DIR__ . '/../../../..' . static::BIN_PATH;
+
             static::setMystemPath(
-                __DIR__ . static::BIN_PATH . (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'
+                $path . (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN'
                     ? static::BIN_NAME_WIN
                     : static::BIN_NAME)
             );
