@@ -19,7 +19,7 @@ class Word
     /**
      * @var array
      */
-    public $variants = [];
+    protected $variants = [];
 
     /* @var string[] $falsePositiveList */
     public static $falsePositiveList = [];
@@ -79,9 +79,20 @@ class Word
         }
     }
 
+    /**
+     * @return string
+     */
     public function __toString()
     {
         return $this->normalized();
+    }
+
+    /**
+     * @return array
+     */
+    public function getVariants(): array
+    {
+        return $this->variants;
     }
 
     /**
@@ -132,7 +143,7 @@ class Word
      */
     protected function addGrammemeInVariant(string $grammeme, int $level = null): bool
     {
-        if (!isset($this->variants[$level]) || in_array($grammeme, $this->variants[$level]['grammemes'])) {
+        if (in_array($grammeme, $this->variants[$level]['grammemes'])) {
             return false;
         }
 

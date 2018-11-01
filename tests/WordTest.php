@@ -260,4 +260,31 @@ class WordTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($word->checkGrammeme(Grammeme::DATIVE));
         $this->assertNull($word->getNounCase(1));
     }
+
+    public function testAddGrammeme()
+    {
+        $word = Word::stemm('банка');
+
+        $this->assertArrayNotHasKey(Grammeme::OTHER_VULGARISM, array_flip($word->getVariants()[0]['grammemes']));
+        $this->assertArrayNotHasKey(Grammeme::OTHER_VULGARISM, array_flip($word->getVariants()[1]['grammemes']));
+
+        $word->addGrammeme(Grammeme::OTHER_VULGARISM);
+
+        $this->assertArrayHasKey(Grammeme::OTHER_VULGARISM, array_flip($word->getVariants()[0]['grammemes']));
+        $this->assertArrayHasKey(Grammeme::OTHER_VULGARISM, array_flip($word->getVariants()[1]['grammemes']));
+
+        $countValues_1 = array_count_values($word->getVariants()[0]['grammemes']);
+        $countValues_1a = array_count_values($word->getVariants()[1]['grammemes']);
+
+        $this->assertEquals(1, $countValues_1[Grammeme::OTHER_VULGARISM]);
+        $this->assertEquals(1, $countValues_1a[Grammeme::OTHER_VULGARISM]);
+
+        $word->addGrammeme(Grammeme::OTHER_VULGARISM);
+
+        $countValues_2 = array_count_values($word->getVariants()[0]['grammemes']);
+        $countValues_2a = array_count_values($word->getVariants()[0]['grammemes']);
+
+        $this->assertEquals(1, $countValues_2[Grammeme::OTHER_VULGARISM]);
+        $this->assertEquals(1, $countValues_2a[Grammeme::OTHER_VULGARISM]);
+    }
 }
