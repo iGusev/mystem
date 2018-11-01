@@ -68,7 +68,7 @@ class Article
     {
         $result = [];
 
-        foreach ($this->getWords() as &$word) {
+        foreach ($this->getWords() as $word) {
             if ($word->checkGrammeme($grammeme, $level)) {
                 $result[] = $word;
             }
@@ -84,7 +84,7 @@ class Article
     public function checkBadWords(bool $stopOnFirst = false)
     {
         $result = [];
-        foreach ($this->getWords() as &$word) {
+        foreach ($this->getWords() as $word) {
             if ($word->isBadWord()) {
                 $result[$word->getOriginal()] = $word->normalized();
                 if ($stopOnFirst) {
