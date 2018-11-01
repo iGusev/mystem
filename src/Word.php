@@ -305,6 +305,7 @@ class Word
     /**
      * @param array $constants
      * @param int $variant
+     *
      * @return null|string
      */
     protected function searchGrammemeInList(array $constants, $variant = 0)
@@ -325,29 +326,45 @@ class Word
     /**
      * @return bool
      */
-    public function isBadWord()
+    public function isBadWord(): bool
     {
         $original = mb_strtolower($this->getOriginal(), 'UTF-8');
         if ($this->checkGrammeme(Grammeme::OTHER_VULGARISM)) {
-            $inExceptions = in_array($original, self::$falsePositiveList)
-                || (in_array($this->normalized(), self::$falsePositiveNormalizedList)
-                    && !in_array($original, self::$falseNegativeList));
-
-            if ($inExceptions) {
+            if ($this->checkFalsePositive($original)) {
                 $this->removeGrammeme(Grammeme::OTHER_VULGARISM);
+                return false;
             }
-
-            return !$inExceptions;
+        } elseif ($this->checkFalseNegative($original)) {
+            $this->addGrammeme(Grammeme::OTHER_VULGARISM);
+            return true;
         } else {
-            $inExceptions = in_array($original, self::$falseNegativeList)
-                || (in_array($this->normalized(), self::$falseNegativeNormalizedList)
-                    && !in_array($original, self::$falsePositiveList));
-
-            if ($inExceptions) {
-                $this->addGrammeme(Grammeme::OTHER_VULGARISM);
-            }
-
-            return $inExceptions;
+            return false;
         }
+
+        return true;
+    }
+
+    /**
+     * @param string $original
+     *
+     * @return bool
+     */
+    protected function checkFalsePositive(string $original): bool
+    {
+        return in_array($original, self::$falsePositiveList)
+            || (in_array($this->normalized(), self::$falsePositiveNormalizedList)
+                && !in_array($original, self::$falseNegativeList));
+    }
+
+    /**
+     * @param string $original
+     *
+     * @return bool
+     */
+    protected function checkFalseNegative(string $original): bool
+    {
+        return in_array($original, self::$falseNegativeList)
+            || (in_array($this->normalized(), self::$falseNegativeNormalizedList)
+                && !in_array($original, self::$falsePositiveList));
     }
 }
