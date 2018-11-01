@@ -166,10 +166,6 @@ class Word
      */
     protected function removeGrammemeInVariant(string $grammeme, int $level): bool
     {
-        if (!isset($this->variants[$level]['grammemes'])) {
-            return false;
-        }
-
         $key = array_search($grammeme, $this->variants[$level]['grammemes']);
         unset($this->variants[$level]['grammemes'][$key]);
 
