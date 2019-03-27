@@ -20,15 +20,16 @@ class Article
     /**
      * Article constructor.
      * @param string $text
+     * @param bool $solveSyntacticDisambiguation
      *
      * @throws \Exception
      */
-    public function __construct(string $text)
+    public function __construct(string $text, $solveSyntacticDisambiguation = false)
     {
         $offset = 0;
         $this->article = $text;
 
-        $stemmed = Mystem::stemm($text);
+        $stemmed = Mystem::stemm($text, $solveSyntacticDisambiguation);
         foreach ($stemmed as $part) {
             $word = ArticleWord::newFromLexicalString($part, 1, $this->article);
 

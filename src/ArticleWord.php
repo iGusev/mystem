@@ -39,12 +39,13 @@ class ArticleWord extends Word
     /**
      * @param $word
      * @param null $maxVariants
+     * @param bool $solveSyntacticDisambiguation
      * @param null $article
      * @return self
      *
      * @throws \Exception
      */
-    public static function stemm($word, $maxVariants = null, &$article = null): self
+    public static function stemm($word, $maxVariants = null, $solveSyntacticDisambiguation = false, &$article = null): self
     {
         /* @var ArticleWord $word */
         $word = parent::stemm($word, $maxVariants);

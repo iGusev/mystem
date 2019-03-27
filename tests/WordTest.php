@@ -241,6 +241,28 @@ class WordTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($case, Word::stemm($noun)->getNounCase());
     }
 
+    /**
+     * @return array
+     */
+    public static function providerSolveSyntacticDisambiguation()
+    {
+        return [
+            ['Кузнецова', false, Grammeme::MASCULINE],
+            ['Кузнецова', true, Grammeme::FEMININE],
+        ];
+    }
+
+    /**
+     * @dataProvider providerSolveSyntacticDisambiguation
+     * @param string $noun
+     * @param bool $solveSyntacticDisambiguation
+     * @param string $case
+     */
+    public function testSolveSyntacticDisambiguation($noun, $solveSyntacticDisambiguation, $case)
+    {
+        $this->assertEquals($case, Word::stemm($noun, null, $solveSyntacticDisambiguation)->getGender());
+    }
+
     public function testUndefinedGrammeme()
     {
         $this->assertNull(Word::stemm('летел')->getNounCase());

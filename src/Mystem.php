@@ -14,6 +14,11 @@ class Mystem
 
     private static $handle;
 
+    /**
+     * @var bool
+     */
+    private static $solveSyntacticDisambiguation = false;
+
     protected static $pipes;
 
     /**
@@ -35,12 +40,13 @@ class Mystem
      *     }
      *   }
      * @param string $text
+     * @param bool $solveSyntacticDisambiguation When true - apply contextual disambiguation.
      * @throws \Exception
      * @return array[] lexical strings associative array
      */
-    public static function stemm($text)
+    public static function stemm($text, $solveSyntacticDisambiguation = true)
     {
-        self::procOpen();
+        self::procOpen($solveSyntacticDisambiguation);
 
         do {
             $endMark = 'end' . random_int(99999, PHP_INT_MAX);
@@ -91,17 +97,22 @@ class Mystem
     }
 
     /**
+     * @param bool $solveSyntacticDisambiguation
+     *
      * @return array
      *
      * @throws \Exception
      */
-    private static function procOpen()
+    private static function procOpen($solveSyntacticDisambiguation = false)
     {
-        if (self::$handle !== null) {
+        if (self::$handle !== null && self::$solveSyntacticDisambiguation == $solveSyntacticDisambiguation) {
             return [];
         }
 
-        self::$handle = proc_open(self::getMystemPath() . ' -incs --format=json', array(
+        self::$solveSyntacticDisambiguation = $solveSyntacticDisambiguation;
+        $additionalParam = $solveSyntacticDisambiguation ? 'd' : '';
+
+        self::$handle = proc_open(self::getMystemPath() . ' -incs' . $additionalParam . ' --format=json', array(
             0 => ['pipe', 'r'],
             1 => ['pipe', 'w'],
             2 => ['pipe', 'w']

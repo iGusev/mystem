@@ -53,13 +53,14 @@ class Word
     /**
      * @param $word
      * @param int|null $maxVariants
+     * @param bool $solveSyntacticDisambiguation
      *
      * @return Word
      */
-    public static function stemm($word, $maxVariants = null)
+    public static function stemm($word, $maxVariants = null, $solveSyntacticDisambiguation = false)
     {
         try {
-            $lexicalString = Mystem::stemm($word);
+            $lexicalString = Mystem::stemm($word, $solveSyntacticDisambiguation);
             return self::newFromLexicalString(isset($lexicalString[0]) ? $lexicalString[0] : $word, $maxVariants);
         } catch (\Exception $e) {
         }
