@@ -43,7 +43,6 @@ class ArticleTest extends TestCase
         $this->assertEmpty($article->checkBadWords());
     }
 
-
     /**
      * @return array
      */
